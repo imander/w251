@@ -3,7 +3,8 @@ version: '2'
 services:
   face_detector:
     image: {{ lookup('env','DOCKER_REPO') }}/face-detector-arm:latest
-    privileged: true
+    devices:
+      - "/dev/video{{ lookup('env','CAMERA_INDEX') }}:/dev/video{{ lookup('env','CAMERA_INDEX') }}"
     depends_on:
       - mqtt_broker
     environment:

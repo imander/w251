@@ -3,5 +3,5 @@ infrastructure/ansible/inventory
 *.tfstate
 *.tfstate.backup
 virtualenv
-.terraform
+.terraform*
 
