@@ -68,6 +68,10 @@ run:
 		-e DISPLAY=$(DISPLAY) \
 		-it --rm $(DOCKER_REPO)/face-detector$(DOCKER_ARCH)
 
+.PHONY: plan
+plan:
+	cd infrastructure/terraform && terraform plan
+
 .PHONY: cloud-up
 cloud-up:
 	cd infrastructure/terraform && terraform apply -auto-approve
