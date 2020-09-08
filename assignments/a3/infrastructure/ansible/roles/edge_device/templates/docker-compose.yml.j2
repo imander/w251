@@ -1,0 +1,26 @@
+---
+version: '2'
+services:
+  face_detector:
+    image: {{ lookup('env','DOCKER_REPO') }}/face-detector-arm:latest
+    privileged: true
+    depends_on:
+      - mqtt_broker
+    environment:
+      MQTT_URL: mqtt://user:password@mqtt_broker:1883
+      CAMERA_INDEX:  {{ lookup('env','CAMERA_INDEX') }}
+      WAIT_INTERVAL: {{ lookup('env','WAIT_INTERVAL') }}
+      MQTT_TOPIC: {{ lookup('env','MQTT_TOPIC') }}
+
+  mqtt_broker:
+    image: {{ lookup('env','DOCKER_REPO') }}/mqtt-broker-arm:latest
+    expose:
+      - "1883"
+
+  mqtt_forwarder:
+    image: {{ lookup('env','DOCKER_REPO') }}/mqtt-forwarder-arm:latest
+    depends_on:
+      - mqtt_broker
+    environment:
+      LOCALMQTT_URL: mqtt://user:password@mqtt_broker:1883
+      CLOUDMQTT_URL: "mqtt://user:password@{{ tfstate.outputs.image_server_public_ip.value }}:1883"
