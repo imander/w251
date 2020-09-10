@@ -30,7 +30,7 @@ build-detector:
 
 .PHONY: buildx-detector
 buildx-detector:
-	cd detector && $(BUILDX) -t imander/mqtt-broker .
+	cd detector && $(BUILDX) -t imander/face-detector .
 
 .PHONY: build-processor
 build-processor:
