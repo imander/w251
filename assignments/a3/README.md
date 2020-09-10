@@ -66,6 +66,6 @@ A detected face would be published to a topic called `face-detection_png` and re
 
 ## Results
 
-The results of the facial detection pipeline can be viewed in the `imander-w251-image-capture` S3 bucket or at the following URL.
+The results of the facial detection pipeline can be viewed in the `imander-image-capture.w251.edu` S3 bucket or at the following S3 static website.
 
-https://imander-w251-image-capture.s3.amazonaws.com
+http://imander-image-capture.w251.edu.s3-website-us-west-2.amazonaws.com/

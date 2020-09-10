@@ -33,6 +33,17 @@
   roles:
     - {role: edge_device, tags: [start]}
 
+- hosts: localhost
+  gather_facts: False
+  become: False
+  pre_tasks:
+    - include_vars:
+        file: ../terraform/terraform.tfstate
+        name: tfstate
+      tags: start
+  roles:
+    - {role: s3, tags: [start]}
+
 - hosts: all
   gather_facts: False
   become: True

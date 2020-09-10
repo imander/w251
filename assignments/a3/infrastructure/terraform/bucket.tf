@@ -5,9 +5,15 @@ output "s3_bucket_name" {
 }
 
 resource "aws_s3_bucket" "image_bucket" {
-  bucket = var.bucket_name
-  acl    = "public-read"
+  bucket        = var.bucket_name
+  acl           = "public-read"
   force_destroy = true
+
+  website {
+    index_document = "index.html"
+    error_document = "error.html"
+  }
+
   policy = <<-EOF
 {
   "Id": "Policy1599427644637",
@@ -25,4 +31,11 @@ resource "aws_s3_bucket" "image_bucket" {
   ]
 }
 EOF
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "HEAD"]
+    allowed_origins = ["*"]
+  }
 }
+
