@@ -28,6 +28,26 @@ Both of these steps can be performed at once as follows:
 $ make build-all push-all
 ```
 
+## Multi-Architecture Builds
+
+Building for multiple-architectures simultaneously requires more configuration that the previous method. The benefit is that all docker images can be built on a single machine. In order to perform a multi-architecture build the following prerequisites must be met:
+
+- Docker with buildx and experimental features enabled
+- A buildx environment that can build both x86 and arm images
+- A dockerhub account since build and push happens in a single step
+
+If all prerequisites are met run the following command to build all images with x86 and ARM architectures and push to dockerhub.
+
+```
+$ make buildx-all
+```
+
+When using the buildx option images won't be named based on the CPU architecture so the [docker-compose](infrastructure/ansible/roles/edge_device/templates/docker-compose.yml.j2) file for the edge devices must be edited in remove `-arm` from the image names. The following linux command can accomplish this without having to manually edit the file.
+
+```
+$ sed -i 's/-arm//' infrastructure/ansible/roles/edge_device/templates/docker-compose.yml.j2
+```
+
 ## Configuration
 
 The `.env` file should be used to configure various aspects of the infrastructure deployment. Refer to the comments in that file for details on each configuration option.

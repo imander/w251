@@ -3,9 +3,9 @@ BUILDX = docker buildx build --push --platform linux/amd64,linux/arm64
 
 include .env
 
-# DOCKER_ARCH is used to build images with a suffix -arm if and arm envrionment is used
-# the prefered way to build would be to use buildx to keep the image name consistent
-# and offload the architecure detection to docker
+# DOCKER_ARCH is used to build images with a suffix -arm if and arm environment is used
+# the preferred way to build would be to use buildx to keep the image name consistent
+# and offload the architecture detection to docker
 ifeq ($(ARCH),aarch64)
 	DOCKER_ARCH = -arm
 endif
