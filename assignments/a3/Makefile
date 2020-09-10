@@ -1,11 +1,16 @@
 ARCH = $(shell uname -m)
+BUILDX = docker buildx build --push --platform linux/amd64,linux/arm64
 
 include .env
 
+# DOCKER_ARCH is used to build images with a suffix -arm if and arm envrionment is used
+# the prefered way to build would be to use buildx to keep the image name consistent
+# and offload the architecure detection to docker
 ifeq ($(ARCH),aarch64)
 	DOCKER_ARCH = -arm
 endif
 
+export DOCKER_CLI_EXPERIMENTAL=enabled
 export GO111MODULE=on
 export CAMERA_INDEX=$(DETECT_CAMERA_INDEX)
 export WAIT_INTERVAL=$(DETECT_WAIT_INTERVAL)
@@ -23,17 +28,33 @@ virtualenv:
 build-detector:
 	cd detector && docker build -t $(DOCKER_REPO)/face-detector$(DOCKER_ARCH) .
 
+.PHONY: buildx-detector
+buildx-detector:
+	cd detector && $(BUILDX) -t imander/mqtt-broker .
+
 .PHONY: build-processor
 build-processor:
 	cd processor && docker build -t $(DOCKER_REPO)/image-processor$(DOCKER_ARCH) .
+
+.PHONY: buildx-processor
+buildx-processor:
+	cd processor && $(BUILDX) -t imander/image-processor .
 
 .PHONY: build-forwarder
 build-forwarder:
 	cd mqtt_forwarder && docker build -t $(DOCKER_REPO)/mqtt-forwarder$(DOCKER_ARCH) .
 
+.PHONY: buildx-forwarder
+buildx-forwarder:
+	cd mqtt_forwarder && $(BUILDX) -t imander/mqtt-forwarder .
+
 .PHONY: build-broker
 build-broker:
 	cd mqtt_broker && docker build -t $(DOCKER_REPO)/mqtt-broker$(DOCKER_ARCH) .
+
+.PHONY: buildx-broker
+buildx-broker:
+	cd mqtt_broker && $(BUILDX) -t imander/mqtt-broker .
 
 .PHONY: push-detector
 push-detector:
@@ -53,6 +74,9 @@ push-broker:
 
 .PHONY: build-all
 build-all: build-detector build-processor build-forwarder build-broker
+
+.PHONY: buildx-all
+buildx-all: buildx-detector buildx-processor buildx-forwarder buildx-broker
 
 .PHONY: push-all
 push-all: push-detector push-processor push-forwarder push-broker
