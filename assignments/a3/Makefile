@@ -119,6 +119,8 @@ config-up: virtualenv ansible-inventory
 	source virtualenv/bin/activate && \
 	cd infrastructure/ansible && \
 	ansible-playbook deploy.yml --tags "start" -i inventory
+	@echo -e "\n\nCaptured images can be viewed at the following URL:"
+	@echo -e "http://$(AWS_S3_BUCKET_NAME).s3-website-$(AWS_REGION).amazonaws.com"
 
 .PHONY: config-down
 config-down: ansible-inventory
