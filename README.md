@@ -5,3 +5,5 @@
 [Assignment 4](assignments/a4)
 
 [Assignment 5](assignments/a5)
+
+[Assignment 6](assignments/a6)
