@@ -9,8 +9,9 @@ video link: https://www.dropbox.com/sh/6k9fhwi58q1vt2v/AAAKlmqdNLFZsrV74dgasz70a
     - density_second_layer = 32
     - batch_size = 128
 
-**Average Reward:** 203.47
-**Total Above 200:** 56
+|Average Reward|Total Above 200|
+|--------------|---------------|
+|203.47|56|
 
 As this is the first attempted model, I did not want to modify too much from the baseline configuration. I increased the density of the layers in order to prevent under fitting of the model and increased batch size to improve the accuracy of the estimator when calculating the weights.
 
@@ -48,8 +49,9 @@ This model the learning rate was dropped by an order of magnitude to see if that
     - learning rate = 0.0005
     - epochs = 2
 
-**Average Reward:** 236.97619798217755
-**Total Above 200:** 86
+|Average Reward|Total Above 200|
+|--------------|---------------|
+|236.98|86|
 
 I moved the learning rate to 0.0005 and increased the layer densities to 256 and 128. I set training to terminate after 500 episodes so this model only reached and average of 187 when training completed. That said, this model showed a significant improvement over model 1. It should also be said that while the average and total above seem like good numbers there were still several landings that "killed" our astronauts with large negative scores.
 
@@ -71,8 +73,9 @@ Starting Testing of the trained model...
     - learning rate = 0.001
     - epochs = 2
 
-**average reward:** 234.1946527969742
-**total above 200:** 89
+|Average Reward|Total Above 200|
+|--------------|---------------|
+|234.19|89|
 
 The goal of this model is to improve the training speed and try not to kill any astronauts. The first layer density was increased to 512 in order to capture more features before passing to the second layer that remained unchanged at 128. In order to improve training speed the learning rate was moved back to 0.001 while the epsilon decay was moved to 0.99. This seems like the ideal spot in regard to training speed since this model reached an average score of 200 in just over 300 episodes. While the average reward was a little less the total above 200 outperformed model 4, and even more important, this model did not kill any astronauts with a low score of 102. This diffence could possibly be explained by the faster epsilon decay causing this model to be more conservative but "safer" that model 4 but model 4 learning how to maximize the highest score more often.
 
